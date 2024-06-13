@@ -995,7 +995,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ead78736bdd81b549bd9d1b9caba5541, type: 2}
+  - {fileID: 2100000, guid: 505011847cec1044e9d303435e31184f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1181,7 +1181,7 @@ MonoBehaviour:
   park: {fileID: 10312023}
   car: {fileID: 678817371}
   carColor: {r: 0.1764706, g: 0.50980395, b: 0.06666667, a: 1}
-  lineColor: {r: 0.1764706, g: 0.5294118, b: 0.06666667, a: 0.2901961}
+  lineColor: {r: 0.1764706, g: 0.50980395, b: 0.06666667, a: 0.2901961}
 --- !u!1 &498929500
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,7 +1304,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 505011847cec1044e9d303435e31184f, type: 2}
+  - {fileID: 2100000, guid: ead78736bdd81b549bd9d1b9caba5541, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
