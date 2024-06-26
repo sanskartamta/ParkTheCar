@@ -10,6 +10,7 @@ public class Game : MonoBehaviour
 {
     // Singleton class:
     public static Game Instance;
+    public GameObject bt;
 
     [HideInInspector] public List<Route> readyRoutes = new();
 
@@ -27,6 +28,7 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        bt.SetActive(false);
         totalRoutes = transform.GetComponentsInChildren<Route>().Length;
         successfulParks = 0;
 
@@ -53,6 +55,9 @@ public class Game : MonoBehaviour
         if (successfulParks == totalRoutes)
         {
             Debug.Log("You Win!!");
+            bt.SetActive(true);
+
+            /*
                 int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
             DOVirtual.DelayedCall(1.3f, () =>
             {
@@ -60,7 +65,7 @@ public class Game : MonoBehaviour
                     SceneManager.LoadScene(nextLevel);
                 else
                     Debug.LogWarning("NO NEXT LEVEL AVAILABLE");
-            });
+            });*/
         }
     }
 
