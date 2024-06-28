@@ -10,6 +10,11 @@ public class MainMenu : MonoBehaviour
         StartCoroutine(waitime());
     }
 
+    public void Load()
+    {
+        StartCoroutine(wwaitime());
+    }
+
     public void Quit()
     {
         StartCoroutine(Waitime());
@@ -21,10 +26,17 @@ public class MainMenu : MonoBehaviour
 
     }
 
+    IEnumerator wwaitime()
+    {
+        yield return new WaitForSeconds(0.2f);
+        SceneManager.LoadScene(PlayerPrefs.GetInt("SavedScene"));
+
+    }
     IEnumerator Waitime()
     {
         yield return new WaitForSeconds(0.2f);
         Application.Quit();
+        PlayerPrefs.SetInt("SavedScene", SceneManager.GetActiveScene().buildIndex);
 
     }
 }

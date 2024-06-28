@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
-using DG.Tweening; 
+using DG.Tweening;
 
 public class Car : MonoBehaviour
 {
@@ -25,15 +26,39 @@ public class Car : MonoBehaviour
     {
         if (collision.transform.TryGetComponent(out Car othercar))
         {
-            StopAllCoroutines();
-            rb.DOKill(false);
-
-            Vector3 hitPoint = collision.contacts[0].point;
-            AddExplosionForce(hitPoint);
-            Smokefx.Play();
-
-            Game.Instance.OnCCollision?.Invoke();
+            HandleCarCollision(collision);
         }
+        else if (collision.transform.CompareTag("Obstacle"))
+        {
+            HandleObstacleCollision(collision);
+        }
+    }
+
+    private void HandleCarCollision(Collision collision)
+    {
+        StopAllCoroutines();
+        rb.DOKill(false);
+
+        Vector3 hitPoint = collision.contacts[0].point;
+        AddExplosionForce(hitPoint);
+        Smokefx.Play();
+
+        Game.Instance.OnCCollision?.Invoke();
+    }
+
+    private void HandleObstacleCollision(Collision collision)
+    {
+        StopAllCoroutines();
+        rb.DOKill(false);
+
+        Vector3 hitPoint = collision.contacts[0].point;
+        AddExplosionForce(hitPoint);
+        Smokefx.Play();
+
+        Game.Instance.OnCCollision?.Invoke();
+
+        // Optionally, you can invoke another event for obstacle collision
+        // Game.Instance.OnObstacleCollision?.Invoke();
     }
 
     private float GetRandomAngle()
@@ -50,19 +75,17 @@ public class Car : MonoBehaviour
         rb.AddTorque(new Vector3(GetRandomAngle(), GetRandomAngle(), GetRandomAngle()));
     }
 
-
     public void Move(Vector3[] path)
     {
         rb.DOLocalPath(path, 2f * durationMultiplier * path.Length)
             .SetLookAt(.01f, false)
-            .SetEase(Ease.Linear); 
+            .SetEase(Ease.Linear);
     }
 
     public void StopDancingAnim()
     {
-        bodyTransform.DOKill(true) ;
+        bodyTransform.DOKill(true);
     }
-
 
     public void SetColor(Color color)
     {

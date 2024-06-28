@@ -3,23 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using DG.Tweening;
-using UnityEngine.Experimental.Rendering;
 
 public class Game : MonoBehaviour
 {
-    // Singleton class:
+    // Singleton instance
     public static Game Instance;
-    public GameObject bt;
 
-    [HideInInspector] public List<Route> readyRoutes = new();
+    // UI button reference
+    
 
+    // List of routes
+    [HideInInspector] public List<Route> readyRoutes = new List<Route>();
+
+    // Total number of routes and successful parks
     private int totalRoutes;
     private int successfulParks;
 
-    // events:
+
+    // Events
     public UnityAction<Route> OnCarEntersPark;
     public UnityAction OnCCollision;
+    public Button nextLevelButton;
 
     private void Awake()
     {
@@ -28,37 +34,43 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-        bt.SetActive(false);
-        totalRoutes = transform.GetComponentsInChildren<Route>().Length;
+        nextLevelButton.gameObject.SetActive(false);
+
+        totalRoutes = FindObjectsOfType<Route>().Length; // Update to find all Routes in the scene
         successfulParks = 0;
 
+        // Subscribe to events
         OnCarEntersPark += OnCarEntersParkHandler;
         OnCCollision += OnCCollisionHandler;
+
+
     }
 
     private void OnCCollisionHandler()
     {
         Debug.Log("GAME OVER");
 
-        
+        // Restart the current scene after delay
         DOVirtual.DelayedCall(2f, () =>
         {
             int currentLevel = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadScene(currentLevel);
         });
     }
+
     private void OnCarEntersParkHandler(Route route)
     {
-        route.car.StopDancingAnim(); 
+        route.car.StopDancingAnim();
         successfulParks++;
 
+        // Check if all parks are successful
         if (successfulParks == totalRoutes)
         {
             Debug.Log("You Win!!");
-            bt.SetActive(true);
+            nextLevelButton.gameObject.SetActive(true);
 
-            /*
-                int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
+            // Load the next level after a delay
+            /*int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
             DOVirtual.DelayedCall(1.3f, () =>
             {
                 if (nextLevel < SceneManager.sceneCountInBuildSettings)
@@ -69,17 +81,34 @@ public class Game : MonoBehaviour
         }
     }
 
+    public void LoadNextScene()
+    {
+        int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(nextLevel);
+    }
+
+    // Method to register a route
     public void RegisterRoute(Route route)
     {
         readyRoutes.Add(route);
 
+        // If all routes are registered, move all cars
         if (readyRoutes.Count == totalRoutes)
             MoveAllCars();
     }
 
+    // Method to move all registered cars
     private void MoveAllCars()
     {
         foreach (var route in readyRoutes)
-            route.car.Move( route.linePoints); 
+        {
+            if (route.car != null)
+                route.car.Move(route.linePoints);
+        }
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 }
