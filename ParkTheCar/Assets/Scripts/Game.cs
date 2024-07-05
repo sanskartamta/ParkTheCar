@@ -26,6 +26,7 @@ public class Game : MonoBehaviour
     public UnityAction<Route> OnCarEntersPark;
     public UnityAction OnCCollision;
     public Button nextLevelButton;
+    public Button reloadLevelButton;
 
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class Game : MonoBehaviour
     private void Start()
     {
         nextLevelButton.gameObject.SetActive(false);
+        reloadLevelButton.gameObject.SetActive(true);
 
         totalRoutes = FindObjectsOfType<Route>().Length; // Update to find all Routes in the scene
         successfulParks = 0;
@@ -68,6 +70,7 @@ public class Game : MonoBehaviour
         {
             Debug.Log("You Win!!");
             nextLevelButton.gameObject.SetActive(true);
+            reloadLevelButton.gameObject.SetActive(false);
 
             // Load the next level after a delay
             /*int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
