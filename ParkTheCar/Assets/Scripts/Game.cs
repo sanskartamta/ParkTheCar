@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class Game : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class Game : MonoBehaviour
     public UnityAction OnCCollision;
     public Button nextLevelButton;
     public Button reloadLevelButton;
+    public GameObject CompleteLevel;
 
     private void Awake()
     {
@@ -37,6 +39,7 @@ public class Game : MonoBehaviour
     {
         nextLevelButton.gameObject.SetActive(false);
         reloadLevelButton.gameObject.SetActive(true);
+        CompleteLevel.SetActive(false);
 
         totalRoutes = FindObjectsOfType<Route>().Length; // Update to find all Routes in the scene
         successfulParks = 0;
@@ -71,6 +74,7 @@ public class Game : MonoBehaviour
             Debug.Log("You Win!!");
             nextLevelButton.gameObject.SetActive(true);
             reloadLevelButton.gameObject.SetActive(false);
+            CompleteLevel.SetActive(true);
 
             // Load the next level after a delay
             /*int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
