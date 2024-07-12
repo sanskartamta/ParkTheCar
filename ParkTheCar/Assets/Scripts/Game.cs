@@ -27,7 +27,7 @@ public class Game : MonoBehaviour
     public UnityAction<Route> OnCarEntersPark;
     public UnityAction OnCCollision;
     public Button nextLevelButton;
-    public Button reloadLevelButton;
+    public GameObject reloadLevelButton;
     public GameObject CompleteLevel;
 
     private void Awake()
@@ -75,6 +75,7 @@ public class Game : MonoBehaviour
             nextLevelButton.gameObject.SetActive(true);
             reloadLevelButton.gameObject.SetActive(false);
             CompleteLevel.SetActive(true);
+            UnlockNewLevel();
 
             // Load the next level after a delay
             /*int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
@@ -117,5 +118,15 @@ public class Game : MonoBehaviour
     public void MainMenu()
     {
         SceneManager.LoadScene("Main Menu");
+    }
+
+    void UnlockNewLevel()
+    {
+        if (SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
+        {
+            PlayerPrefs.SetInt("ReachedIndex", SceneManager.GetActiveScene().buildIndex + 1);
+            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
+            PlayerPrefs.Save();
+        }
     }
 }

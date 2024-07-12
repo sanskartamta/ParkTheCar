@@ -13,6 +13,7 @@ public class CoinCounter : MonoBehaviour
     {
         
         coinCountDisplay.GetComponent<TextMeshProUGUI>().text = "" + CoinCount;
+        PlayerPrefs.Save();
         
     }
 }
