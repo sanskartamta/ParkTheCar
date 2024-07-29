@@ -1,32 +1,51 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager: MonoBehaviour
 {
+    public GameObject[] levels; // Array to hold references to your level GameObjects
+    private int currentLevelIndex = 0;
 
-    public Button[] buttons;
-
-    private void Awake()
+    void Start()
     {
-        int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            buttons[i].interactable = false;
-        }
-        for (int i = 0; i < unlockedLevel; i++)
-        {
-            buttons[i].interactable = true;
-        }
-    }
-    public void OpenLevel(int levelId)
-    {
-        string levelName = "Level" + levelId;
-        SceneManager.LoadScene(levelName);
-         
+        // Ensure only the first level is active initially
+        LoadLevel(currentLevelIndex);
     }
 
+    public void LoadNextLevel()
+    {
+        // Deactivate the current level
+        if (levels[currentLevelIndex] != null)
+        {
+            levels[currentLevelIndex].SetActive(false);
+        }
 
+        // Increment the level index
+        currentLevelIndex++;
+        if (currentLevelIndex >= levels.Length)
+        {
+            currentLevelIndex = 0; // Loop back to the first level or handle as per your requirement
+        }
+
+        // Activate the next level
+        LoadLevel(currentLevelIndex);
+    }
+
+    void LoadLevel(int levelIndex)
+    {
+        // Activate the specified level
+        if (levels[levelIndex] != null)
+        {
+            levels[levelIndex].SetActive(true);
+        }
+
+        // Deactivate all other levels
+        for (int i = 0; i < levels.Length; i++)
+        {
+            if (i != levelIndex && levels[i] != null)
+            {
+                levels[i].SetActive(false);
+            }
+        }
+    }
 }
